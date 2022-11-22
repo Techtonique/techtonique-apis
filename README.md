@@ -1,6 +1,6 @@
 # forecastingAPI
 
-High level Python functions for interacting with Techtonique forecasting API: `create_account`, 
+High level Python & R functions for interacting with Techtonique forecasting API: `create_account`, 
 `get_token` and `get_forecast`
 
 # install 
@@ -69,7 +69,6 @@ forecastingAPI::create_account(username = "user@example.com", password = "pwd") 
 
 ## get a token
 token <- forecastingAPI::get_token(username = "user@example.com", password = "pwd")
-
 
 ## get forecast with prediction interval
 path_to_file <- '/Users/t/Documents/datasets/time_series/univariate/nile.csv' # (examples:https://github.com/Techtonique/datasets/tree/main/time_series/univariate)
