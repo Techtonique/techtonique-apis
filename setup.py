@@ -19,12 +19,6 @@ install_requires = [
     x.strip() for x in all_reqs if "git+" not in x
 ]
 
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
-
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
 requirements = ["requests"]
 
 test_requirements = [ ]

@@ -1,16 +1,18 @@
 import forecastingapi as fapi
 
 if __name__ == "__main__":
-    ## create an account
-    # res_create_account = fapi.create_account(username="tester_py3@example.com", 
-    #                                         password="python222orpython333")
-    # print(res_create_account)
+    
+    ## 1 - create an account (once)
+    res_create_account = fapi.create_account(username="user@example.com", 
+                                             password="pwd") # choose a better password
+    print(res_create_account)
 
-    ## get a token 
-    token = fapi.get_token(username="tester_py3@example.com", password="python222orpython333")
+    ## 2 - get a token 
+    token = fapi.get_token(username = "user@example.com",
+                                   password = "pwd")
     print(token)
 
-    ## get forecast with prediction interval
+    ## 3 - get forecast with prediction interval
     path_to_file = '/Users/t/Documents/datasets/time_series/univariate/nile.csv'
      
     res_get_forecast = fapi.get_forecast(file=path_to_file, 
@@ -28,3 +30,8 @@ if __name__ == "__main__":
     start_training = 2, n_training = 7, h = 4, level = 90)
 
     print(res_get_forecast3)
+
+    res_get_forecast4 = fapi.get_forecast(file=path_to_file, 
+    token=token, method = "prophet")
+
+    print(res_get_forecast4)

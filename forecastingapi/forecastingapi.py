@@ -33,7 +33,7 @@ def get_token(username, password):
 
 
 def get_forecast(file, token,
-                method = "theta",
+                method = "theta", # currently "theta", "mean", "rw", "prophet"
                 h = 5, level = 95, 
                 date_formatting = "original", # either "original" (yyyy-mm-dd) or "ms" (milliseconds)
                 start_training = None, n_training = None):
