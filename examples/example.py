@@ -13,7 +13,8 @@ if __name__ == "__main__":
     print(token)
 
     ## 3 - get forecast with prediction interval
-    path_to_file = '/Users/t/Documents/datasets/time_series/univariate/nile.csv'
+    path_to_file = '/Users/t/Documents/datasets/time_series/univariate/nile.csv' # (examples:
+#' https://github.com/Techtonique/datasets/tree/main/time_series/univariate)
      
     res_get_forecast = fapi.get_forecast(file=path_to_file, 
     token=token)
