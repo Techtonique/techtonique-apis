@@ -85,3 +85,7 @@ dist: clean ## builds source and wheel package
 
 install: clean ## install the package to the active Python's site-packages
 	python3 -m pip install . 
+
+run-examples: install ## run all examples with one command
+	find examples -maxdepth 2 -name "*.py" -exec  python3 {} \;
+

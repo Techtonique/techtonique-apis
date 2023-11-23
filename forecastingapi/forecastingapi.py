@@ -1,5 +1,3 @@
-"""Main module."""
-
 import requests
 from .config import BASE_URL
 
@@ -31,12 +29,14 @@ def get_token(username, password):
 
     return token
 
+
 def read_file_or_url(file_name, path):
-    if path.startswith('http://') or path.startswith('https://'):
+    if path.startswith("http://") or path.startswith("https://"):
         response = requests.get(path)
         return {file_name: response.content}
     else:
-        return {file_name: open(path, 'rb')}
+        return {file_name: open(path, "rb")}
+
 
 def get_forecast(
     file,
@@ -58,24 +58,25 @@ def get_forecast(
         }
 
     else:
-
         params = {
             "h": str(h),
             "level": str(level),
             "date_formatting": str(date_formatting),
         }
 
-    #files = {
-    #    "file": open(
-    #         str(file), "rb"
-    #    )  # Example files available at https://github.com/Techtonique/datasets/tree/main/time_series/univariate
-    #}
+    try:
+        response_forecast = requests.post(
+            BASE_URL + "/api/" + str(method),
+            files=read_file_or_url("file", file),
+            params=params,
+            auth=(token, "x"),
+        )
 
-    response_forecast = requests.post(
-        BASE_URL + "/api/" + str(method),
-        files=read_file_or_url('file', file),
-        params=params,
-        auth=(token, "x"),
-    )
+    except Exception as e:
+        print(e)
+        return {
+            "status": 400,
+            "message": "Please check the token + the file is in the right format (csv, txt, or json) + the url is correct.",
+        }
 
     return response_forecast.json()
