@@ -26,6 +26,8 @@ library(forecastingAPI)
 
 # examples in Python and R 
 
+See these [examples](./examples/example.py) too
+
 - Python
 
 ```python
@@ -41,7 +43,7 @@ token = fapi.get_token(username = "user@example.com",
                                 password = "pwd")
 print(token)
 
-## 3 - get forecast with prediction interval
+## 3 - get forecast with prediction interval (can use an url too)
 path_to_file = '/Users/t/Documents/datasets/time_series/univariate/nile.csv' # (examples:https://github.com/Techtonique/datasets/tree/main/time_series/univariate)
     
 res_get_forecast = fapi.get_forecast(file=path_to_file, 
