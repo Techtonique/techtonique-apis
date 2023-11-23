@@ -72,26 +72,26 @@ print(res_get_forecast4)
 
 ```R
 ## create account (once)
-forecastingAPI::create_account(username = "user@example.com", password = "pwd") # choose a better password
+forecastingapi::create_account(username = "user@example.com", password = "pwd") # choose a better password
 
 ## get a token
-token <- forecastingAPI::get_token(username = "user@example.com", password = "pwd")
+token <- forecastingapi::get_token(username = "user@example.com", password = "pwd")
 
 ## get forecast with prediction interval
 path_to_file <- '/Users/t/Documents/datasets/time_series/univariate/nile.csv' # (examples:https://github.com/Techtonique/datasets/tree/main/time_series/univariate)
 
-f1 <- forecastingAPI::get_forecast(file = path_to_file, token = token,
+f1 <- forecastingapi::get_forecast(file = path_to_file, token = token,
                                    start_training = 1, n_training = 10)
 
-f2 <- forecastingAPI::get_forecast(file = path_to_file, token = token,
+f2 <- forecastingapi::get_forecast(file = path_to_file, token = token,
                                    start_training = 2, n_training = 7,
                                    h = 4, level = 90)
 
-f3 <- forecastingAPI::get_forecast(file = path_to_file, token = token,
+f3 <- forecastingapi::get_forecast(file = path_to_file, token = token,
                                    start_training = 2, n_training = 7,
                                    date_formatting="ms",
                                    h = 4, level = 90)
 
-f4 <- forecastingAPI::get_forecast(file = path_to_file, token = token,
+f4 <- forecastingapi::get_forecast(file = path_to_file, token = token,
                                    method = "prophet")
 ```
