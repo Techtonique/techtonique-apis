@@ -95,3 +95,7 @@ f3 <- forecastingAPI::get_forecast(file = path_to_file, token = token,
 f4 <- forecastingAPI::get_forecast(file = path_to_file, token = token,
                                    method = "prophet")
 ```
+
+[](./techtoniquegif1.gif)
+
+[](techtoniquegif1.gif)
