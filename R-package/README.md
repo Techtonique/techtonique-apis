@@ -1,3 +1,3 @@
-# `forecastingAPI` (R version)
+# `forecastingapi` (R version)
 
-Lorem ipsum
+see [README](../README.md)

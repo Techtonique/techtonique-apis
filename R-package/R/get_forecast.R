@@ -43,6 +43,15 @@ get_forecast <- function(file, token,
     )
   }
 
+  if (grepl("^(http|https)://", file)) {
+    temp_file <- tempfile()    
+    httr::GET(file, httr::write_disk(temp_file, overwrite = TRUE))
+    if (!file.exists(temp_file)) {
+      stop("Failed to download file")
+    }
+    file <- temp_file    
+  }
+
   files = list(
     `file` = httr::upload_file(file)
   )
