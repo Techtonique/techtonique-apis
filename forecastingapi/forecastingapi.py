@@ -18,6 +18,7 @@ def get_forecast(
     n_hidden_features=5,
     lags=25,
     type_pi='gaussian',
+    replications=None,
     h=10,
 ):
     headers = {'Authorization': 'Bearer ' + token}
@@ -27,11 +28,12 @@ def get_forecast(
     'n_hidden_features': str(n_hidden_features),
     'lags': str(lags),
     'type_pi': type_pi,
+    'replications': str(replications) if replications is not None else None,
     'h': str(h),
     }
 
     try:
-        
+
         response_forecast = requests.post(
             BASE_URL + "/" + str(endpoint),
             files=read_file_or_url("file", file),
