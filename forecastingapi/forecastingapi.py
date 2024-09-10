@@ -2,34 +2,6 @@ import requests
 from .config import BASE_URL
 
 
-def create_account(username, password):
-    headers = {
-        # Already added when you pass json=
-        # 'Content-Type': 'application/json',
-    }
-
-    json_data = {
-        "username": str(username),
-        "password": str(password),
-    }
-
-    response = requests.post(
-        BASE_URL + "/api/users", headers=headers, json=json_data
-    )
-
-    return response
-
-
-def get_token(username, password):
-    response_token = requests.get(
-        BASE_URL + "/api/token", auth=(str(username), str(password))
-    )
-
-    token = response_token.json()["token"]
-
-    return token
-
-
 def read_file_or_url(file_name, path):
     if path.startswith("http://") or path.startswith("https://"):
         response = requests.get(path)
@@ -41,35 +13,30 @@ def read_file_or_url(file_name, path):
 def get_forecast(
     file,
     token,
-    method="theta",  # currently "theta", "mean", "rw", "prophet"
-    h=5,
-    level=95,
-    date_formatting="original",  # either "original" (yyyy-mm-dd) or "ms" (milliseconds)
-    start_training=None,
-    n_training=None,
+    endpoint="forecastinggbdt",
+    method="RidgeCV",
+    n_hidden_features=5,
+    lags=25,
+    type_pi='gaussian',
+    h=10,
 ):
-    if (start_training is not None) and (n_training is not None):
-        params = {
-            "h": str(h),
-            "level": str(level),
-            "date_formatting": str(date_formatting),
-            "start_training": str(start_training),
-            "n_training": str(n_training),
-        }
+    headers = {'Authorization': 'Bearer ' + token}
 
-    else:
-        params = {
-            "h": str(h),
-            "level": str(level),
-            "date_formatting": str(date_formatting),
-        }
+    params = {
+    'method': method,
+    'n_hidden_features': str(n_hidden_features),
+    'lags': str(lags),
+    'type_pi': type_pi,
+    'h': str(h),
+    }
 
     try:
+        
         response_forecast = requests.post(
-            BASE_URL + "/api/" + str(method),
+            BASE_URL + "/" + str(endpoint),
             files=read_file_or_url("file", file),
             params=params,
-            auth=(token, "x"),
+            headers=headers,
         )
 
     except Exception as e:

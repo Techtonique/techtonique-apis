@@ -1,8 +1,8 @@
-.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install lint lint/flake8
+.PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
-import os, webbrowser, sys
+import os, webbrowser, sys, mkdocs
 
 from urllib.request import pathname2url
 
@@ -21,17 +21,17 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
+BROWSER := python3 -c "$$BROWSER_PYSCRIPT"
 
 help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
-	rm -fr .eggs/
+	rm -fr .eggs/	
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -fr {} +
 
@@ -41,51 +41,55 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
 
-clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
+clean-test: ## remove test and coverage artifacts	
+	rm -fr htmlcov
 
-lint/flake8: ## check style with flake8
+lint: ## check style with flake8
 	flake8 forecastingapi tests
 
-lint: lint/flake8 ## check style
+coverage: ## check code coverage quickly with the default Python	
+	coverage report --omit="venv/*,forecastingapi/tests/*" --show-missing
 
-test: ## run tests quickly with the default Python
-	python setup.py test
+docs: install ## generate docs		
+	pip install black pdoc 
+	black forecastingapi/* --line-length=80	
+	find forecastingapi/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
+	pdoc -t docs forecastingapi/* --output-dir forecastingapi-docs
+	find . -name '__pycache__' -exec rm -fr {} +
 
-test-all: ## run tests on every Python version with tox
-	tox
-
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source forecastingapi setup.py test
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/forecastingapi.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ forecastingapi
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+servedocs: install ## compile the docs watching for change	 	
+	pip install black pdoc 
+	black forecastingapi/* --line-length=80	
+	find forecastingapi/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
+	pdoc -t docs forecastingapi/* 
+	find . -name '__pycache__' -exec rm -fr {} +
 
 release: dist ## package and upload a release
-	twine upload dist/*
+	pip install twine --ignore-installed
+	python3 -m twine upload --repository pypi dist/* --verbose
 
 dist: clean ## builds source and wheel package
 	python3 setup.py sdist
-	python3 setup.py bdist_wheel
+	python3 setup.py bdist_wheel	
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	python3 -m pip install . 
+	python3 -m pip install .
 
-run-examples: install ## run all examples with one command
+build-site: docs ## export mkdocs website to a folder		
+	cp -rf forecastingapi-docs/* ../../Pro_Website/Techtonique.github.io/forecastingapi
+	find . -name '__pycache__' -exec rm -fr {} +
+
+run-examples: ## run all examples with one command
 	find examples -maxdepth 2 -name "*.py" -exec  python3 {} \;
+
+run-mts: ## run all mts examples with one command
+	find examples -maxdepth 2 -name "*mts*.py" -exec  python3 {} \;
+
+run-lazy: ## run all lazy examples with one command
+	find examples -maxdepth 2 -name "lazy*.py" -exec  python3 {} \;
+
+run-tests: install ## run all the tests with one command
+	pip3 install coverage nose2
+	python3 -m coverage run -m unittest discover -s forecastingapi/tests -p "*.py"	
 

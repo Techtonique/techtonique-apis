@@ -1,1 +1,1 @@
-BASE_URL = "https://techtonique2.herokuapp.com"
+BASE_URL = "https://www.techtonique.net"
