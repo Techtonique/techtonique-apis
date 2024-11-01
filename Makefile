@@ -52,16 +52,16 @@ coverage: ## check code coverage quickly with the default Python
 
 docs: install ## generate docs		
 	pip install black pdoc 
-	black forecastingapi/* --line-length=80	
+	#black forecastingapi/* --line-length=80	
 	find forecastingapi/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
-	pdoc -t docs forecastingapi/* --output-dir forecastingapi-docs
+	pdoc -t docs forecastingapi/forecastingapi.py --output-dir forecastingapi-docs
 	find . -name '__pycache__' -exec rm -fr {} +
 
 servedocs: install ## compile the docs watching for change	 	
 	pip install black pdoc 
-	black forecastingapi/* --line-length=80	
+	#black forecastingapi/* --line-length=80	
 	find forecastingapi/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
-	pdoc -t docs forecastingapi/* 
+	pdoc -t docs forecastingapi/forecastingapi.py
 	find . -name '__pycache__' -exec rm -fr {} +
 
 release: dist ## package and upload a release
@@ -77,7 +77,7 @@ install: clean ## install the package to the active Python's site-packages
 	python3 -m pip install .
 
 build-site: docs ## export mkdocs website to a folder		
-	cp -rf forecastingapi-docs/* ../../Pro_Website/Techtonique.github.io/forecastingapi
+	cp -rf forecastingapi-docs/* ../../Pro_Website/Techtonique.github.io/techtonique_api_py
 	find . -name '__pycache__' -exec rm -fr {} +
 
 run-examples: ## run all examples with one command
