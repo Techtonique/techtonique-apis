@@ -108,5 +108,4 @@ ENV/
 # DS Store
 *.DS_Store
 
-docs/
 forecastingapi-docs/
