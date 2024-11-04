@@ -38,7 +38,7 @@ for sim in sims:
 plt.plot(mean, color='blue', linewidth=2, label='Mean')
 
 # Plot the lower and upper bounds as shaded areas
-plt.fill_between(range(len(mean)), lower, upper, color='lightblue', alpha=0.2, label='Confidence Interval')
+plt.fill_between(range(len(mean)), lower, upper, color='lightblue', alpha=0.2, label='Prediction Interval')
 
 # Labels and title
 plt.xlabel('Time Point')
