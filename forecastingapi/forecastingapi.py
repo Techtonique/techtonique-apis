@@ -68,7 +68,7 @@ def get_forecast(
     }
 
     files = {
-        'file': (path_to_file, open(path_to_file, 'rb'), 'text/csv'),
+        'file': (path_to_file, read_file_or_url(path_to_file), 'text/csv'),
     }
 
     response = requests.post(BASE_URL + '/forecasting',
@@ -77,9 +77,9 @@ def get_forecast(
     return response.json()
 
 
-def read_file_or_url(file_name, path):
+def read_file_or_url(path):
     if path.startswith("http://") or path.startswith("https://"):
         response = requests.get(path)
-        return {file_name: response.content}
+        return response.content
     else:
-        return {file_name: open(path, "rb")}
+        return open(path, "rb")

@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 import ast 
 
 # examples in https://github.com/Techtonique/datasets/tree/main/time_series        
-path_to_file = '/Users/t/Documents/datasets/time_series/univariate/AirPassengers.csv' 
+path_to_file = 'https://raw.githubusercontent.com/Techtonique/datasets/refs/heads/main/time_series/univariate/AirPassengers.csv'
+#path_to_file = '/Users/t/Documents/datasets/time_series/univariate/AirPassengers.csv' 
     
 start = time() 
 res_get_forecast = fapi.get_forecast(path_to_file,     
@@ -15,7 +16,7 @@ n_hidden_features=5,
 lags=25,
 type_pi='scp2-kde',
 replications=10,
-h=5)
+h=10)
 print(f"Elapsed: {time() - start} seconds \n")
 
 print(res_get_forecast)
