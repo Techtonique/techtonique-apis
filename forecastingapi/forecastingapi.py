@@ -1,6 +1,39 @@
+import os
+from dotenv import load_dotenv
+import getpass
 import requests
 from .config import BASE_URL
 
+
+def get_token(token=None):
+    """
+    Retrieve the API token, either from the environment or user input.
+
+    Parameters:
+    -----------
+    token : str
+        Token provided as a parameter (default is None).
+
+    Returns:
+    --------
+    str
+        A valid API token.
+    """
+    if token:
+        return token
+
+    # Load environment variables from .env if available
+    load_dotenv()
+    token = os.getenv("TECHTONIQUE_TOKEN")
+
+    if not token:
+        # Prompt user for token if not found in environment
+        token = getpass.getpass("Enter your token (from https://www.techtonique.net/token): ")
+
+    if not token:
+        raise ValueError("API token is required but was not provided.")
+
+    return token
 
 def get_forecast(
     path_to_file,
@@ -10,6 +43,7 @@ def get_forecast(
     type_pi="gaussian",
     replications=None,
     h=10,
+    token=None,
 ):
     """
     Get a forecast from the Techtonique API.
@@ -37,6 +71,9 @@ def get_forecast(
 
     h : int
         Forecast horizon (default is 10).
+    
+    token : str
+        API token for authentication (default is None). If not provided, and if not in the environment, the user will be prompted to enter it.
 
     Returns:
     --------
@@ -52,7 +89,7 @@ def get_forecast(
     >>> print(forecast)
     """
 
-    token = input("Enter your token (from https://www.techtonique.net/token): ")
+    token = get_token(token)
 
     headers = {
         'Authorization': 'Bearer ' + token,
