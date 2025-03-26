@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import getpass
 import requests
+import ast
 from .config import BASE_URL
 
 
@@ -28,12 +29,14 @@ def get_token(token=None):
 
     if not token:
         # Prompt user for token if not found in environment
-        token = getpass.getpass("Enter your token (from https://www.techtonique.net/token): ")
+        token = getpass.getpass(
+            "Enter your token (from https://www.techtonique.net/token): ")
 
     if not token:
         raise ValueError("API token is required but was not provided.")
 
     return token
+
 
 def get_forecast(
     path_to_file,
@@ -71,7 +74,7 @@ def get_forecast(
 
     h : int
         Forecast horizon (default is 10).
-    
+
     token : str
         API token for authentication (default is None). If not provided, and if not in the environment, the user will be prompted to enter it.
 
@@ -111,7 +114,13 @@ def get_forecast(
     response = requests.post(BASE_URL + '/forecasting',
                              params=params, headers=headers, files=files)
 
-    return response.json()
+    # Use ast.literal_eval to transform stringified lists into Python objects
+    transformed_response = {
+        key: ast.literal_eval(value) if isinstance(value, str) else value
+        for key, value in response.json().items()
+    }
+
+    return transformed_response
 
 
 def read_file_or_url(path):

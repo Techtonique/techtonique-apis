@@ -22,10 +22,10 @@ print(f"Elapsed: {time() - start} seconds \n")
 print(res_get_forecast)
 
 # Convert lists to numpy arrays for easier handling
-mean = np.asarray(ast.literal_eval(res_get_forecast['mean'])).ravel()
-lower = np.asarray(ast.literal_eval(res_get_forecast['lower'])).ravel()
-upper = np.asarray(ast.literal_eval(res_get_forecast['upper'])).ravel()
-sims = np.asarray(ast.literal_eval(res_get_forecast['sims']))
+mean = np.asarray(res_get_forecast['mean']).ravel()
+lower = np.asarray(res_get_forecast['lower']).ravel()
+upper = np.asarray(res_get_forecast['upper']).ravel()
+sims = np.asarray(res_get_forecast['sims'])
 
 # Plotting
 plt.figure(figsize=(10, 6))
@@ -46,19 +46,4 @@ plt.ylabel('Value')
 plt.title('Spaghetti Plot of Mean, Bounds, and Simulated Paths')
 plt.legend()
 plt.show()
-
-
-start = time() 
-res_get_forecast = fapi.get_forecast(path_to_file,     
-base_model="RidgeCV",
-n_hidden_features=5,
-lags=25,
-type_pi='scp2-kde',
-replications=10,
-h=10, 
-token="TOKEN")
-print(f"Elapsed: {time() - start} seconds \n")
-
-print(res_get_forecast)
-
 
