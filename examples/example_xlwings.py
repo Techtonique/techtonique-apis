@@ -9,7 +9,7 @@ api = TechtoniqueAPI()
 @func
 @arg("df", index=False)
 @ret(index=False)
-def xl_forecast(
+def techto_forecast(
     df: pd.DataFrame,
     base_model: str = "RidgeCV",
     n_hidden_features: int = 5,
@@ -37,7 +37,7 @@ def xl_forecast(
 @func
 @arg("df", index=False)
 @ret(index=False)
-def xl_regression(
+def techto_regression(
     df: pd.DataFrame,
     base_model: str = "ElasticNet",
     n_hidden_features: int = 5,
@@ -59,7 +59,7 @@ def xl_regression(
 @func
 @arg("df", index=False)
 @ret(index=False)
-def xl_gbdt_classification(
+def techto_gbdt_classification(
     df: pd.DataFrame,
     model_type: str = "lightgbm"
 ) -> pd.DataFrame:
@@ -77,7 +77,7 @@ def xl_gbdt_classification(
 @func
 @arg("df", index=False)
 @ret(index=False)
-def xl_reserving(
+def techto_reserving(
     df: pd.DataFrame,
     method: str = "chainladder"
 ) -> pd.DataFrame:
@@ -96,7 +96,7 @@ def xl_reserving(
 @func
 @arg("df", index=False)
 @ret(index=False)
-def xl_survival_curve(
+def techto_survival_curve(
     df: pd.DataFrame,
     method: str = "km",
     patient_id: int = None
@@ -114,7 +114,7 @@ def xl_survival_curve(
     #return pd.DataFrame(survival)
 
 @func
-def xl_simulate_scenario(
+def techto_simulate_scenario(
     model: str = "GBM",
     n: int = 10,
     horizon: int = 5,
