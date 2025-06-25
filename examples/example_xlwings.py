@@ -30,8 +30,9 @@ def xl_forecast(
             replications=replications,
             h=h,
         )
-    forecast = result.get("forecast", [])
-    return pd.DataFrame(forecast)
+    print("Forecasting result:", result)
+    #forecast = result.get("forecast", [])
+    #return pd.DataFrame(forecast)
 
 @func
 @arg("df", index=False)
@@ -51,8 +52,9 @@ def xl_regression(
             n_hidden_features=n_hidden_features,
             return_pi=return_pi,
         )
-    predictions = result.get("predictions", [])
-    return pd.DataFrame(predictions)
+    print("Regression result:", result)
+    #predictions = result.get("predictions", [])
+    #return pd.DataFrame(predictions)
 
 @func
 @arg("df", index=False)
@@ -68,8 +70,9 @@ def xl_gbdt_classification(
             file_path=tmp.name,
             model_type=model_type,
         )
-    predictions = result.get("predictions", [])
-    return pd.DataFrame(predictions)
+    print("GBDT Classification result:", result)
+    #predictions = result.get("predictions", [])
+    #return pd.DataFrame(predictions)
 
 @func
 @arg("df", index=False)
@@ -85,9 +88,10 @@ def xl_reserving(
             file_path=tmp.name,
             method=method,
         )
+    print("Reserving result:", result)
     # Adjust the key as needed based on API response
-    reserving = result.get("reserving", [])
-    return pd.DataFrame(reserving)
+    #reserving = result.get("reserving", [])
+    #return pd.DataFrame(reserving)
 
 @func
 @arg("df", index=False)
@@ -105,8 +109,9 @@ def xl_survival_curve(
             method=method,
             patient_id=patient_id,
         )
-    survival = result.get("survival_curve", [])
-    return pd.DataFrame(survival)
+    print("Survival curve result:", result)
+    #survival = result.get("survival_curve", [])
+    #return pd.DataFrame(survival)
 
 @func
 def xl_simulate_scenario(
@@ -132,5 +137,6 @@ def xl_simulate_scenario(
         theta3=theta3,
         seed=seed,
     )
-    simulated = result.get("simulated", [])
-    return pd.DataFrame(simulated)
+    print("Simulation result:", result)
+    #simulated = result.get("simulated", [])
+    #return pd.DataFrame(simulated)
