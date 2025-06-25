@@ -88,7 +88,7 @@ class TechtoniqueAPI:
         file_path: str,
         base_model: str = "ElasticNet",
         n_hidden_features: int = 5,
-        return_pi: bool = False,
+        return_pi: bool = True,  # default True as in example
     ) -> Dict[str, Any]:
         params = {
             "base_model": base_model,
@@ -124,7 +124,7 @@ class TechtoniqueAPI:
     def reserving(
         self,
         file_path: str,
-        method: str,
+        method: str = "chainladder",  # default as in example
     ) -> Dict[str, Any]:
         params = {"method": method}
         return self._post_file("/reserving", file_path, params)
@@ -132,7 +132,7 @@ class TechtoniqueAPI:
     def mlreserving(
         self,
         file_path: str,
-        method: str,
+        method: str = "RidgeCV",
     ) -> Dict[str, Any]:
         params = {"method": method}
         return self._post_file("/mlreserving", file_path, params)
@@ -142,7 +142,7 @@ class TechtoniqueAPI:
     def survival_curve(
         self,
         file_path: str,
-        method: str = "km",
+        method: str = "km",  # default as in example
         patient_id: Optional[int] = None,
     ) -> Dict[str, Any]:
         params = {"method": method}
@@ -154,13 +154,13 @@ class TechtoniqueAPI:
     # 5 - Simulation -----
     def simulate_scenario(
         self,
-        model: str,
-        n: int,
-        horizon: int,
-        frequency: str,
-        x0: Optional[Union[int, float]] = None,
-        theta1: Optional[float] = None,
-        theta2: Optional[float] = None,
+        model: str = "GBM",  # default as in example
+        n: int = 10,
+        horizon: int = 5,
+        frequency: str = "quarterly",
+        x0: Optional[Union[int, float]] = 1.0,  # required for GBM, default 1.0
+        theta1: Optional[float] = 0.0,
+        theta2: Optional[float] = 0.5,
         theta3: Optional[float] = None,
         seed: Optional[int] = None,
     ) -> Dict[str, Any]:
