@@ -6,6 +6,9 @@
 
 High level Python functions for interacting with [Techtonique forecasting API](https://www.techtonique.net/docs)
 
+
+[png](./techtoniquegif1.gif)
+
 ## Installation
 
 ```bash

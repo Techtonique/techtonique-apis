@@ -1,49 +1,65 @@
-import forecastingapi as fapi
-import numpy as np
-import pandas as pd 
-from time import time
-import matplotlib.pyplot as plt
-import ast 
+from techtonique_apis import TechtoniqueAPI
 
-# examples in https://github.com/Techtonique/datasets/tree/main/time_series        
-path_to_file = 'https://raw.githubusercontent.com/Techtonique/datasets/refs/heads/main/time_series/univariate/AirPassengers.csv'
-#path_to_file = '/Users/t/Documents/datasets/time_series/univariate/AirPassengers.csv' 
-    
-start = time() 
-res_get_forecast = fapi.get_forecast(path_to_file,     
-base_model="RidgeCV",
-n_hidden_features=5,
-lags=25,
-type_pi='scp2-kde',
-replications=10,
-h=10)
-print(f"Elapsed: {time() - start} seconds \n")
+api = TechtoniqueAPI()
 
-print(res_get_forecast)
 
-# Convert lists to numpy arrays for easier handling
-mean = np.asarray(res_get_forecast['mean']).ravel()
-lower = np.asarray(res_get_forecast['lower']).ravel()
-upper = np.asarray(res_get_forecast['upper']).ravel()
-sims = np.asarray(res_get_forecast['sims'])
+# Example 1: Forecasting
+forecast_result = api.forecasting(
+    file_path="/Users/t/Documents/datasets/time_series/univariate/a10.csv",
+    base_model="RidgeCV",
+    n_hidden_features=5,
+    lags=25,
+    type_pi="kde",
+    replications=10,
+    h=5
+)
+print("Forecasting result:", forecast_result)
 
-# Plotting
-plt.figure(figsize=(10, 6))
 
-# Plot the simulated lines
-for sim in sims:
-    plt.plot(sim, color='gray', linestyle='--', alpha=0.6, label='Simulations' if 'Simulations' not in plt.gca().get_legend_handles_labels()[1] else "")
+# Example 2: Machine Learning Regression
+regression_result = api.mlregression(
+    file_path="/Users/t/Documents/datasets/tabular/regression/mtcars2.csv",
+    base_model="ElasticNet",
+    n_hidden_features=5,
+    return_pi=True
+)
+print("Regression result:", regression_result)
 
-# Plot the mean line
-plt.plot(mean, color='blue', linewidth=2, label='Mean')
 
-# Plot the lower and upper bounds as shaded areas
-plt.fill_between(range(len(mean)), lower, upper, color='lightblue', alpha=0.2, label='Prediction Interval')
+# Example 3: GBDT Classification
+gbdt_classification_result = api.gbdt_classification(
+    file_path="/Users/t/Documents/datasets/tabular/classification/iris_dataset2.csv",
+    model_type="lightgbm"
+)
+print("GBDT Classification result:", gbdt_classification_result)
 
-# Labels and title
-plt.xlabel('Time Point')
-plt.ylabel('Value')
-plt.title('Spaghetti Plot of Mean, Bounds, and Simulated Paths')
-plt.legend()
-plt.show()
 
+# Example 4: Reserving
+reserving_result = api.reserving(
+    file_path="/Users/t/Documents/datasets/tabular/triangle/raa.csv",
+    method="chainladder"
+)
+print("Reserving result:", reserving_result)
+
+
+# Example 5: Survival Analysis
+survival_result = api.survival_curve(
+    file_path="/Users/t/Documents/datasets/tabular/survival/kidney.csv",
+    method="km",
+    patient_id=123
+)
+print("Survival curve result:", survival_result)
+
+
+# Example 6: Scenarios
+scenarios_result = api.simulate_scenario(
+    model="GBM",
+    n=10,
+    frequency="quarterly",
+    x0=100,
+    horizon=5,
+    theta1=0,
+    theta2=0.5,
+    theta3=0.5,
+)
+print("Scenarios result:", scenarios_result)

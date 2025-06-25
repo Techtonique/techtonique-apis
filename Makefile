@@ -74,8 +74,8 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	uv pip install -r requirements.txt
-	uv pip install -e .
+	#uv pip install -r requirements.txt
+	pip install -e .
 
 build-site: docs ## export mkdocs website to a folder		
 	cp -rf forecastingapi-docs/* ../../Pro_Website/Techtonique.github.io/techtonique_api_py
