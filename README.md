@@ -3,7 +3,7 @@
 
 # techtonique_apis
 
-High level Python functions for interacting with [Techtonique APIs](https://www.techtonique.net/docs)
+High level Python functions for interacting with [Techtonique APIs](https://www.techtonique.net)
 
 
 ![png](./techtoniquegif1.gif)
