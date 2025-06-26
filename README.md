@@ -17,7 +17,7 @@ pip install techtonique_apis
 ## Usage 
 
 - File examples: [https://github.com/Techtonique/datasets/tree/main/time_series](https://github.com/Techtonique/datasets/tree/main/time_series)
-- Get a token: [https://www.techtonique.net/token](https://www.techtonique.net/token) (store in .env)
+- Get a token: [https://www.techtonique.net/token](https://www.techtonique.net/token) (store in .env, in current directory as `TECHTONIQUE_TOKEN`)
 
 ```python
 from techtonique_apis import TechtoniqueAPI
