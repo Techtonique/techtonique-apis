@@ -112,10 +112,10 @@ def techto_forecast(
             if return_sims:
                 # sims: shape (replications, horizon, n_series)
                 sims = result["sims"]  # list of replications, each is list of horizon, each is list of n_series
-                # For each replication, extract the selected series
+                # For each replication, extract the selected series only
                 sims_selected = [[h[idx] for h in rep] for rep in sims]  # shape: (replications, horizon)
                 sims_df = pd.DataFrame(sims_selected).transpose()
-                sims_df.columns = [(i + 1) for i in range(sims_df.shape[1])]
+                sims_df.columns = [f"sim_{i+1}_{series_choice}" for i in range(sims_df.shape[1])]
                 res2_df = pd.DataFrame({"date": output_dates})
                 return pd.concat([res2_df, sims_df], axis=1)
             return summary_df
@@ -142,6 +142,3 @@ def techto_forecast(
             sims_df.insert(0, "date", output_dates)
             return sims_df
         return summary_df
-
-
-
