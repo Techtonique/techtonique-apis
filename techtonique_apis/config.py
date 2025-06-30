@@ -1,4 +1,4 @@
-import os 
+import os
 from dotenv import load_dotenv
 
 BASE_URL = "https://www.techtonique.net"
@@ -35,5 +35,3 @@ def get_token(token=None):
         raise ValueError("API token is required but was not provided.")
 
     return token
-
-

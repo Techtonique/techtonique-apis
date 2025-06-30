@@ -27,8 +27,8 @@ class TechtoniqueAPI:
         url = f"{self.BASE_URL}{endpoint}"
         with open(file_path, "rb") as f:
             files = {"file": (file_path, f, "text/csv")}
-            response = requests.post(url, headers=self.headers, 
-                files=files, params=params)
+            response = requests.post(url, headers=self.headers,
+                                     files=files, params=params)
         response.raise_for_status()
         return response.json()
 
@@ -45,8 +45,8 @@ class TechtoniqueAPI:
         response.raise_for_status()
         return response.json()
 
-
     # 1 - Forecasting -----
+
     def forecasting(
         self,
         file_path: str,
@@ -67,8 +67,8 @@ class TechtoniqueAPI:
         }
         return self._post_file("/forecasting", file_path, params)
 
-
     # 2 - Machine Learning  -----
+
     def mlclassification(
         self,
         file_path: str,
@@ -119,8 +119,8 @@ class TechtoniqueAPI:
         }
         return self._post_file("/gbdtclassification", file_path, params)
 
-
     # 3 - Reserving -----
+
     def reserving(
         self,
         file_path: str,
@@ -137,8 +137,8 @@ class TechtoniqueAPI:
         params = {"method": method}
         return self._post_file("/mlreserving", file_path, params)
 
-
     # 4 - Survival Analysis -----
+
     def survival_curve(
         self,
         file_path: str,
@@ -150,8 +150,8 @@ class TechtoniqueAPI:
             params["patient_id"] = patient_id
         return self._post_file("/survivalcurve", file_path, params)
 
-
     # 5 - Simulation -----
+
     def simulate_scenario(
         self,
         model: str = "GBM",  # default as in example
@@ -181,4 +181,3 @@ class TechtoniqueAPI:
         if seed is not None:
             params["seed"] = seed
         return self._get("/scenarios/simulate/", params)
-
