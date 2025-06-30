@@ -94,12 +94,33 @@ def techto_forecast(
             return pd.concat([res2_df, sims_df], axis=1)
         return pd.DataFrame(result)
     else:  # multivariate time series
-        # Build summary DataFrame for all series
         n_series = len(result["mean"][0])
-        # Try to use column names from input DataFrame, excluding 'date'
         series_names = [col for col in df.columns if col != "date"]
         if len(series_names) != n_series:
             series_names = [f"series_{i+1}" for i in range(n_series)]
+
+        # If series_choice is provided and valid, extract its index and return as univariate
+        if series_choice is not None and series_choice in series_names:
+            idx = series_names.index(series_choice)
+            # Extract only the selected series from each stat
+            summary_df = pd.DataFrame({
+                "date": output_dates,
+                "mean": [x[idx] for x in result["mean"]],
+                "lower": [x[idx] for x in result["lower"]],
+                "upper": [x[idx] for x in result["upper"]],
+            })
+            if return_sims:
+                # sims: shape (replications, horizon, n_series)
+                sims = result["sims"]  # list of replications, each is list of horizon, each is list of n_series
+                # For each replication, extract the selected series
+                sims_selected = [[h[idx] for h in rep] for rep in sims]  # shape: (replications, horizon)
+                sims_df = pd.DataFrame(sims_selected).transpose()
+                sims_df.columns = [(i + 1) for i in range(sims_df.shape[1])]
+                res2_df = pd.DataFrame({"date": output_dates})
+                return pd.concat([res2_df, sims_df], axis=1)
+            return summary_df
+
+        # Otherwise, return the full multivariate summary as before
         summary_data = {"date": output_dates}
         for stat in ["mean", "lower", "upper"]:
             for s in range(n_series):
@@ -107,8 +128,7 @@ def techto_forecast(
         summary_df = pd.DataFrame(summary_data)
         if return_sims:
             # sims: shape (replications, horizon, n_series)
-            sims = res_df.values  # shape: (replications, horizon, n_series)
-            # Flatten to DataFrame: columns = (replication, series)
+            sims = result["sims"]
             flat = []
             for rep in sims:
                 for s in range(n_series):
