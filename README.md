@@ -19,6 +19,8 @@ pip install techtonique_apis
 - File examples: [https://github.com/Techtonique/datasets/tree/main/time_series](https://github.com/Techtonique/datasets/tree/main/time_series)
 - Get a token: [https://www.techtonique.net/token](https://www.techtonique.net/token) (store in .env, in current directory as `TECHTONIQUE_TOKEN`)
 
+  There are 100 free API calls in the free tier/months. 
+
 ```python
 from techtonique_apis import TechtoniqueAPI
 
