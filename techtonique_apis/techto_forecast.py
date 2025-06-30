@@ -24,7 +24,8 @@ def techto_forecast(
     type_pi: str = "kde",
     replications: int = 10,
     h: int = 5,
-    return_sims: bool = False 
+    return_sims: bool = False, 
+    series_choice: str = None
 ) -> pd.DataFrame:
     """Forecasting: pass a time series as a DataFrame from Excel, return forecast.
     
@@ -56,13 +57,16 @@ def techto_forecast(
 
     return_sims : bool, default False
         If True, return the simulation matrix; otherwise, return the forecast summary bounds.
+    
+    series_choice : str, optional
+        If provided, specifies which series to forecast from the DataFrame.
 
     Returns
     -------
 
     pd.DataFrame
         The forecast results or simulation matrix as a DataFrame for Excel.
-        
+
     """
     # Convert Excel serial dates to datetime if needed
     if pd.api.types.is_numeric_dtype(df['date']):
@@ -80,12 +84,44 @@ def techto_forecast(
             h=h,
         )
     output_dates = result["date"]
-    res_df = pd.DataFrame(result.pop('sims'))
-    if return_sims:
-        res2_df = pd.DataFrame([])
-        res2_df["date"] = output_dates
-        sims_df = res_df.transpose()
-        sims_df.columns = [(i + 1) for i in range(sims_df.shape[1])]
-        return pd.concat([res2_df, sims_df], axis=1)
-    return pd.DataFrame(result)
+    if df.shape[1] == 2: # univariate time series
+        res_df = pd.DataFrame(result.pop('sims'))
+        if return_sims:
+            res2_df = pd.DataFrame([])
+            res2_df["date"] = output_dates
+            sims_df = res_df.transpose()
+            sims_df.columns = [(i + 1) for i in range(sims_df.shape[1])]
+            return pd.concat([res2_df, sims_df], axis=1)
+        return pd.DataFrame(result)
+    else:  # multivariate time series
+        # Build summary DataFrame for all series
+        n_series = len(result["mean"][0])
+        # Try to use column names from input DataFrame, excluding 'date'
+        series_names = [col for col in df.columns if col != "date"]
+        if len(series_names) != n_series:
+            series_names = [f"series_{i+1}" for i in range(n_series)]
+        summary_data = {"date": output_dates}
+        for stat in ["mean", "lower", "upper"]:
+            for s in range(n_series):
+                summary_data[f"{stat}_{series_names[s]}"] = [x[s] for x in result[stat]]
+        summary_df = pd.DataFrame(summary_data)
+        if return_sims:
+            # sims: shape (replications, horizon, n_series)
+            sims = res_df.values  # shape: (replications, horizon, n_series)
+            # Flatten to DataFrame: columns = (replication, series)
+            flat = []
+            for rep in sims:
+                for s in range(n_series):
+                    flat.append([h[s] for h in rep])
+            sims_df = pd.DataFrame(flat).transpose()
+            colnames = []
+            for r in range(len(sims)):
+                for s in range(n_series):
+                    colnames.append(f"sim_{r+1}_{series_names[s]}")
+            sims_df.columns = colnames
+            sims_df.insert(0, "date", output_dates)
+            return sims_df
+        return summary_df
+
+
 
