@@ -14,8 +14,16 @@ def excel_date_to_datetime(excel_serial):
     return pd.to_datetime('1899-12-30') + pd.to_timedelta(excel_serial, unit='D')
 
 @func
-@arg("df", index=False)
-@ret(index=False)
+@arg("df", index=False, doc="Excel range with columns 'date' and one or more series.")
+@arg("base_model", doc='Forecasting model (default: "RidgeCV")')
+@arg("n_hidden_features", doc="Number of hidden features (default: 5)")
+@arg("lags", doc="Number of lags (default: 25)")
+@arg("type_pi", doc='Prediction interval type (default: "kde")')
+@arg("replications", doc="Number of simulation replications (default: 10)")
+@arg("h", doc="Forecast horizon (default: 5)")
+@arg("return_sims", doc="If TRUE, return simulation matrix; else, return forecast summary (default: FALSE)")
+@arg("series_choice", doc="(Optional) Name of the series to forecast if multiple are present")
+@ret(index=False, doc="Forecast or simulation results as a table for Excel")
 def techto_forecast(
     df: pd.DataFrame,
     base_model: str = "RidgeCV",
