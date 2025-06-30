@@ -1,10 +1,38 @@
-from typing import Annotated
-from xlwings import func, arg, ret
-import pandas as pd
 import tempfile
+import datetime as dt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from xlwings import func, arg, ret
 from techtonique_apis import TechtoniqueAPI
 
+
 api = TechtoniqueAPI()
+
+@func
+def hello(name: str):
+    # This is the easiest custom function
+    return f"Hello {name}!"
+
+
+@func
+def standard_normal(rows, cols):
+    # Returns an array of standard normally distributed pseudo random numbers
+    rng = np.random.default_rng()
+    matrix = rng.standard_normal(size=(rows, cols))
+    date_rng = pd.date_range(start=dt.datetime(2025, 6, 15), periods=rows, freq="D")
+    df = pd.DataFrame(
+        matrix, columns=[f"col{i + 1}" for i in range(matrix.shape[1])], index=date_rng
+    )
+    return df
+
+
+@func
+def correl2(df: pd.DataFrame):
+    # Like CORREL, but it works on whole matrices instead of just 2 arrays.
+    # The type hint converts the values of the range into a pandas DataFrame.
+    # Use this function on the output of the standard_normal function from above.
+    return df.corr()
 
 @func
 @arg("df", index=False)
@@ -139,4 +167,4 @@ def techto_simulate_scenario(
     )
     print("Simulation result:", result)
     #simulated = result.get("simulated", [])
-    #return pd.DataFrame(simulated)
+    #return pd.DataFrame(simulated)    
