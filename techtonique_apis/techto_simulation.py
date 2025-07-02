@@ -15,7 +15,7 @@ api = TechtoniqueAPI()
 @arg("theta3", doc="Model parameter theta3 (optional)")
 @arg("seed", doc="Random seed (optional)")
 @ret(index=False, doc="Simulation results as a table for Excel")
-def techto_simulate_scenario(
+def techto_simulation(
     model: str = "GBM",
     n: int = 10,
     horizon: int = 5,
