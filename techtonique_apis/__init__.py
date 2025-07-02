@@ -6,10 +6,10 @@ from .techto_simulation import techto_simulation
 from .techto_survival import techto_survival
 
 __all__ = ["TechtoniqueAPI",
-           "techto_forecast", 
+           "techto_forecast",
            "techto_mlclassification",
            "techto_mlregression",
            "techto_reserving",
            "techto_mlreserving",
-           "techto_simulation", 
+           "techto_simulation",
            "techto_survival"]
