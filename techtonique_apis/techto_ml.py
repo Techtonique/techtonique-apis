@@ -3,8 +3,8 @@ import pandas as pd
 from xlwings import func, arg, ret
 from .techtonique_apis import TechtoniqueAPI
 
-api = TechtoniqueAPI()
 
+api = TechtoniqueAPI()
 
 @func
 @arg("df", index=False, doc="Excel range with columns for features and target.")

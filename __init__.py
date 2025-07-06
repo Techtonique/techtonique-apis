@@ -1,6 +1,7 @@
 from .techtonique_apis import TechtoniqueAPI
 from .techtonique_apis import techto_forecast
 from .techtonique_apis import techto_mlclassification, techto_mlregression
+from .techtonique_apis import techto_gbdt_classification, techto_gbdt_regression
 from .techtonique_apis import techto_reserving, techto_mlreserving
 from .techtonique_apis import techto_simulation
 from .techtonique_apis import techto_survival
