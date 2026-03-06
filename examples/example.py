@@ -2,10 +2,9 @@ from techtonique_apis import TechtoniqueAPI
 
 api = TechtoniqueAPI()
 
-
 # Example 1: Forecasting
 forecast_result = api.forecasting(
-    file_path="/Users/t/Documents/datasets/time_series/univariate/a10.csv",
+    file_path="a10.csv",
     base_model="RidgeCV",
     n_hidden_features=5,
     lags=25,
@@ -18,33 +17,24 @@ print("Forecasting result:", forecast_result)
 
 # Example 2: Machine Learning Regression
 regression_result = api.mlregression(
-    file_path="/Users/t/Documents/datasets/tabular/regression/mtcars2.csv",
+    file_path="mtcars2.csv",
     base_model="ElasticNet",
     n_hidden_features=5,
     return_pi=True
 )
 print("Regression result:", regression_result)
 
-
-# Example 3: GBDT Classification
-gbdt_classification_result = api.gbdt_classification(
-    file_path="/Users/t/Documents/datasets/tabular/classification/iris_dataset2.csv",
-    model_type="lightgbm"
-)
-print("GBDT Classification result:", gbdt_classification_result)
-
-
 # Example 4: Reserving
-reserving_result = api.reserving(
-    file_path="/Users/t/Documents/datasets/tabular/triangle/raa.csv",
-    method="chainladder"
+reserving_result = api.mlreserving(
+    file_path="raa.csv",
+    method="RandomForestRegressor"
 )
 print("Reserving result:", reserving_result)
 
 
 # Example 5: Survival Analysis
 survival_result = api.survival_curve(
-    file_path="/Users/t/Documents/datasets/tabular/survival/kidney.csv",
+    file_path="kidney.csv",
     method="km",
     patient_id=123
 )
