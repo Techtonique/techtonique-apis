@@ -51,15 +51,15 @@ survival_result = api.survival_curve(
 print("Survival curve result:", survival_result)
 
 
-# Example 6: Scenarios
-scenarios_result = api.simulate_scenario(
-    model="GBM",
-    n=10,
-    frequency="quarterly",
-    x0=100,
-    horizon=5,
-    theta1=0,
-    theta2=0.5,
-    theta3=0.5,
-)
-print("Scenarios result:", scenarios_result)
+# # Example 6: Scenarios
+# scenarios_result = api.simulate_scenario(
+#     model="GBM",
+#     n=10,
+#     frequency="quarterly",
+#     x0=100,
+#     horizon=5,
+#     theta1=0,
+#     theta2=0.5,
+#     theta3=0.5,
+# )
+# print("Scenarios result:", scenarios_result)
