@@ -5,21 +5,22 @@
 
 High level Python functions for interacting with [Techtonique APIs](https://www.techtonique.net)
 
-
 ![png](./techtoniquegif1.gif)
 
-## Installation
+## 1 - Installation
 
 ```bash
 pip install techtonique_apis
 ```
 
-## Usage 
+## 2 - Usage 
+
+2 types of usage, in Python or in Excel
+
+## 2 - 1 - Python
 
 - File examples: [https://github.com/Techtonique/datasets/tree/main/time_series](https://github.com/Techtonique/datasets/tree/main/time_series)
 - Get a token: [https://www.techtonique.net/token](https://www.techtonique.net/token) (store in .env, in current directory as `TECHTONIQUE_TOKEN`)
-
-  There are 100 free API calls in the free tier/months. 
 
 ```python
 from techtonique_apis import TechtoniqueAPI
@@ -49,16 +50,7 @@ regression_result = api.mlregression(
 )
 print("Regression result:", regression_result)
 
-
-# Example 3: GBDT Classification
-gbdt_classification_result = api.gbdt_classification(
-    file_path="/Users/t/Documents/datasets/tabular/classification/iris_dataset2.csv",
-    model_type="lightgbm"
-)
-print("GBDT Classification result:", gbdt_classification_result)
-
-
-# Example 4: Reserving
+# Example 3: Reserving
 reserving_result = api.reserving(
     file_path="/Users/t/Documents/datasets/tabular/triangle/raa.csv",
     method="chainladder"
@@ -66,28 +58,21 @@ reserving_result = api.reserving(
 print("Reserving result:", reserving_result)
 
 
-# Example 5: Survival Analysis
+# Example 4: Survival Analysis
 survival_result = api.survival_curve(
     file_path="/Users/t/Documents/datasets/tabular/survival/kidney.csv",
     method="km",
     patient_id=123
 )
 print("Survival curve result:", survival_result)
-
-
-# Example 6: Scenarios
-scenarios_result = api.simulate_scenario(
-    model="GBM",
-    n=10,
-    frequency="quarterly",
-    x0=100,
-    horizon=5,
-    theta1=0,
-    theta2=0.5,
-    theta3=0.5,
-)
-print("Scenarios result:", scenarios_result)
 ```
+
+## 2 - 2 - Excel
+
+- [https://thierrymoudiki.github.io/blog/2025/07/02/r/python/techto-forecast](https://thierrymoudiki.github.io/blog/2025/07/02/r/python/techto-forecast)
+- [https://thierrymoudiki.github.io/blog/2025/07/07/r/python/techto-ml-classif](https://thierrymoudiki.github.io/blog/2025/07/07/r/python/techto-ml-classif)
+- [https://thierrymoudiki.github.io/blog/2025/07/06/r/python/techto-ml](https://thierrymoudiki.github.io/blog/2025/07/06/r/python/techto-ml)
+- [https://github.com/Techtonique/techtonique-apis/blob/main/examples/excel_formulas.xlsx](https://github.com/Techtonique/techtonique-apis/blob/main/examples/excel_formulas.xlsx)
 
 ## License
 
