@@ -13,9 +13,7 @@ class TechtoniqueAPI:
     def __init__(self):
         self.token = get_token()
         self.BASE_URL = BASE_URL
-        self.headers = {
-            "Authorization": f"Bearer {self.token}"
-        }
+        self.headers = {"Authorization": f"Bearer {self.token}"}
 
     def _post_file(
         self,
@@ -27,8 +25,9 @@ class TechtoniqueAPI:
         url = f"{self.BASE_URL}{endpoint}"
         with open(file_path, "rb") as f:
             files = {"file": (file_path, f, "text/csv")}
-            response = requests.post(url, headers=self.headers,
-                                     files=files, params=params)
+            response = requests.post(
+                url, headers=self.headers, files=files, params=params
+            )
         response.raise_for_status()
         return response.json()
 

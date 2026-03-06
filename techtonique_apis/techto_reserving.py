@@ -49,9 +49,13 @@ def techto_reserving(
         )
     if method == "chainladder":
         return pd.DataFrame(result)
-    return pd.DataFrame({"origin": result["Origin"],
-                         "IBNR": result["IBNR"],
-                         "IBNR 95": result["IBNR 95%"]})
+    return pd.DataFrame(
+        {
+            "origin": result["Origin"],
+            "IBNR": result["IBNR"],
+            "IBNR 95": result["IBNR 95%"],
+        }
+    )
 
 
 @func
@@ -95,6 +99,10 @@ def techto_mlreserving(
             file_path=tmp.name,
             method=method,
         )
-    return pd.DataFrame({"origin": result["Origin"],
-                         "IBNR": result["IBNR"],
-                         "IBNR 95": result["IBNR 95%"]})
+    return pd.DataFrame(
+        {
+            "origin": result["Origin"],
+            "IBNR": result["IBNR"],
+            "IBNR 95": result["IBNR 95%"],
+        }
+    )

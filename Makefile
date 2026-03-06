@@ -52,14 +52,14 @@ coverage: ## check code coverage quickly with the default Python
 
 docs: install ## generate docs		
 	uv pip install black pdoc 
-	#black techtonique_apis/* --line-length=80	
+	black techtonique_apis/* --line-length=80	
 	find techtonique_apis/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
 	pdoc -t docs techtonique_apis --output-dir techtonique_apis-docs
 	find . -name '__pycache__' -exec rm -fr {} +
 
 servedocs: install ## compile the docs watching for change	 	
 	uv pip install black pdoc 
-	#black techtonique_apis/* --line-length=80	
+	black techtonique_apis/* --line-length=80	
 	find techtonique_apis/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
 	pdoc -t docs techtonique_apis/techtonique_apis.py
 	find . -name '__pycache__' -exec rm -fr {} +
