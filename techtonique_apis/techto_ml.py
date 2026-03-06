@@ -3,14 +3,18 @@ import pandas as pd
 from xlwings import func, arg, ret
 from .techtonique_apis import TechtoniqueAPI
 
-
 api = TechtoniqueAPI()
+
 
 @func
 @arg("df", index=False, doc="Excel range with columns for features and target.")
-@arg("base_model", doc='Classification model (default: "RandomForestClassifier")')
+@arg(
+    "base_model", doc='Classification model (default: "RandomForestClassifier")'
+)
 @arg("n_hidden_features", doc="Number of hidden features (default: 5)")
-@arg("predict_proba", doc="If TRUE, return class probabilities (default: FALSE)")
+@arg(
+    "predict_proba", doc="If TRUE, return class probabilities (default: FALSE)"
+)
 @ret(index=False, doc="Classification predictions as a table for Excel")
 def techto_mlclassification(
     df: pd.DataFrame,
@@ -122,14 +126,14 @@ def techto_mlregression(
             return_pi=return_pi,
         )
     if return_pi:
-        return (pd.DataFrame({
-            "prediction": result["y_pred"],
-            "lower": result["pi_lower"],
-            "upper": result["pi_upper"],
-        }))
-    return (pd.DataFrame({
-        "prediction": result["y_pred"]
-    }))
+        return pd.DataFrame(
+            {
+                "prediction": result["y_pred"],
+                "lower": result["pi_lower"],
+                "upper": result["pi_upper"],
+            }
+        )
+    return pd.DataFrame({"prediction": result["y_pred"]})
 
 
 @func
@@ -180,20 +184,22 @@ def techto_gbdt_regression(
             model_type=model_type,
         )
     if return_pi:
-        return (pd.DataFrame({
-            "prediction": result["y_pred"],
-            "lower": result["pi_lower"],
-            "upper": result["pi_upper"],
-        }))
-    return (pd.DataFrame({
-        "prediction": result["y_pred"]
-    }))
+        return pd.DataFrame(
+            {
+                "prediction": result["y_pred"],
+                "lower": result["pi_lower"],
+                "upper": result["pi_upper"],
+            }
+        )
+    return pd.DataFrame({"prediction": result["y_pred"]})
 
 
 @func
 @arg("df", index=False, doc="Excel range with columns for features and target.")
 @arg("model_type", doc='GBDT model type (default: "lightgbm")')
-@arg("predict_proba", doc="If TRUE, return class probabilities (default: FALSE)")
+@arg(
+    "predict_proba", doc="If TRUE, return class probabilities (default: FALSE)"
+)
 @ret(index=False, doc="GBDT classification predictions as a table for Excel")
 def techto_gbdt_classification(
     df: pd.DataFrame,

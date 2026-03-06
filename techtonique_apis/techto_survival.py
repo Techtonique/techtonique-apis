@@ -9,7 +9,10 @@ api = TechtoniqueAPI()
 @func
 @arg("df", index=False, doc="Excel range with columns for survival data.")
 @arg("method", doc='Survival analysis method (default: "km")')
-@arg("patient_id", doc="(For machine learning 'method's) Patient ID for individual survival curve")
+@arg(
+    "patient_id",
+    doc="(For machine learning 'method's) Patient ID for individual survival curve",
+)
 @ret(index=False, doc="Survival curve results as a table for Excel")
 def techto_survival(
     df: pd.DataFrame,

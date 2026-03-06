@@ -29,7 +29,8 @@ def get_token(token=None):
     if not token:
         # Prompt user for token if not found in environment
         token = getpass.getpass(
-            "Enter your token (from https://www.techtonique.net/token): ")
+            "Enter your token (from https://www.techtonique.net/token): "
+        )
 
     if not token:
         raise ValueError("API token is required but was not provided.")
