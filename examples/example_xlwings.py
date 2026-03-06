@@ -141,30 +141,30 @@ def techto_survival_curve(
     #survival = result.get("survival_curve", [])
     #return pd.DataFrame(survival)
 
-@func
-def techto_simulate_scenario(
-    model: str = "GBM",
-    n: int = 10,
-    horizon: int = 5,
-    frequency: str = "quarterly",
-    x0: float = 100,
-    theta1: float = 0,
-    theta2: float = 0.5,
-    theta3: float = 0.5,
-    seed: int = None,
-) -> pd.DataFrame:
-    """Simulate scenario and return simulated values as a DataFrame for Excel."""
-    result = api.simulate_scenario(
-        model=model,
-        n=n,
-        horizon=horizon,
-        frequency=frequency,
-        x0=x0,
-        theta1=theta1,
-        theta2=theta2,
-        theta3=theta3,
-        seed=seed,
-    )
-    print("Simulation result:", result)
-    #simulated = result.get("simulated", [])
-    #return pd.DataFrame(simulated)    
+# @func
+# def techto_simulate_scenario(
+#     model: str = "GBM",
+#     n: int = 10,
+#     horizon: int = 5,
+#     frequency: str = "quarterly",
+#     x0: float = 100,
+#     theta1: float = 0,
+#     theta2: float = 0.5,
+#     theta3: float = 0.5,
+#     seed: int = None,
+# ) -> pd.DataFrame:
+#     """Simulate scenario and return simulated values as a DataFrame for Excel."""
+#     result = api.simulate_scenario(
+#         model=model,
+#         n=n,
+#         horizon=horizon,
+#         frequency=frequency,
+#         x0=x0,
+#         theta1=theta1,
+#         theta2=theta2,
+#         theta3=theta3,
+#         seed=seed,
+#     )
+#     print("Simulation result:", result)
+#     #simulated = result.get("simulated", [])
+#     #return pd.DataFrame(simulated)    

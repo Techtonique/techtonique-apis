@@ -67,6 +67,9 @@ survival_result = api.survival_curve(
 print("Survival curve result:", survival_result)
 ```
 
+See [examples/example.py](./examples/example.py)
+
+
 ## 2 - 2 - Excel
 
 - [https://thierrymoudiki.github.io/blog/2025/07/02/r/python/techto-forecast](https://thierrymoudiki.github.io/blog/2025/07/02/r/python/techto-forecast)

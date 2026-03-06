@@ -51,21 +51,21 @@ coverage: ## check code coverage quickly with the default Python
 	coverage report --omit="venv/*,techtonique_apis/tests/*" --show-missing
 
 docs: install ## generate docs		
-	pip install black pdoc 
+	uv pip install black pdoc 
 	#black techtonique_apis/* --line-length=80	
 	find techtonique_apis/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
 	pdoc -t docs techtonique_apis --output-dir techtonique_apis-docs
 	find . -name '__pycache__' -exec rm -fr {} +
 
 servedocs: install ## compile the docs watching for change	 	
-	pip install black pdoc 
+	uv pip install black pdoc 
 	#black techtonique_apis/* --line-length=80	
 	find techtonique_apis/ -name "*.py" -exec autopep8 --max-line-length=80 --in-place {} +
 	pdoc -t docs techtonique_apis/techtonique_apis.py
 	find . -name '__pycache__' -exec rm -fr {} +
 
 release: dist ## package and upload a release
-	pip install twine --ignore-installed
+	uv pip install twine --ignore-installed
 	python3 -m twine upload --repository pypi dist/* --verbose
 
 dist: clean ## builds source and wheel package
@@ -74,8 +74,8 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	#uv pip install -r requirements.txt
-	pip install -e .
+	#uv uv pip install -r requirements.txt
+	uv pip install -e .
 
 build-site: docs ## export mkdocs website to a folder		
 	cp -rf techtonique_apis-docs/* ../../Pro_Website/Techtonique.github.io/techtonique_api_py
