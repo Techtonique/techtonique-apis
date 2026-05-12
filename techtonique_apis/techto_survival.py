@@ -50,11 +50,14 @@ def techto_survival(
     - patient_id: (For machine learning methods) Patient ID for individual survival curve.
     Returns: Survival curve results as a table for Excel.
     """
-    with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
-        df.to_csv(tmp.name, index=False)
-        result = api.survival_curve(
-            file_path=tmp.name,
-            method=method,
-            patient_id=patient_id,
-        )
-    return pd.DataFrame(result)
+    try: 
+        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
+            df.to_csv(tmp.name, index=False)
+            result = api.survival_curve(
+                file_path=tmp.name,
+                method=method,
+                patient_id=patient_id,
+            )
+        return pd.DataFrame(result)
+    except Exception as e:
+        return pd.DataFrame({"error": [str(e)]})

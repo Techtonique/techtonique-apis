@@ -90,87 +90,90 @@ def techto_forecast(
         The forecast results or simulation matrix as a DataFrame for Excel.
 
     """
-    # Convert Excel serial dates to datetime if needed
-    if pd.api.types.is_numeric_dtype(df["date"]):
-        df["date"] = df["date"].apply(excel_date_to_datetime)
+    try: 
+        # Convert Excel serial dates to datetime if needed
+        if pd.api.types.is_numeric_dtype(df["date"]):
+            df["date"] = df["date"].apply(excel_date_to_datetime)
 
-    with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
-        df.to_csv(tmp.name, index=False)
-        result = api.forecasting(
-            file_path=tmp.name,
-            base_model=base_model,
-            n_hidden_features=n_hidden_features,
-            lags=lags,
-            type_pi=type_pi,
-            replications=replications,
-            h=h,
-        )
-    output_dates = result["date"]
-    if df.shape[1] == 2:  # univariate time series
-        res_df = pd.DataFrame(result.pop("sims"))
-        if return_sims:
-            res2_df = pd.DataFrame([])
-            res2_df["date"] = output_dates
-            sims_df = res_df.transpose()
-            sims_df.columns = [(i + 1) for i in range(sims_df.shape[1])]
-            return pd.concat([res2_df, sims_df], axis=1)
-        return pd.DataFrame(result)
-    else:  # multivariate time series
-        n_series = len(result["mean"][0])
-        series_names = [col for col in df.columns if col != "date"]
-        if len(series_names) != n_series:
-            series_names = [f"series_{i+1}" for i in range(n_series)]
-
-        # If series_choice is provided and valid, extract its index and return as univariate
-        if series_choice is not None and series_choice in series_names:
-            idx = series_names.index(series_choice)
-            # Extract only the selected series from each stat
-            summary_df = pd.DataFrame(
-                {
-                    "date": output_dates,
-                    "mean": [x[idx] for x in result["mean"]],
-                    "lower": [x[idx] for x in result["lower"]],
-                    "upper": [x[idx] for x in result["upper"]],
-                }
+        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
+            df.to_csv(tmp.name, index=False)
+            result = api.forecasting(
+                file_path=tmp.name,
+                base_model=base_model,
+                n_hidden_features=n_hidden_features,
+                lags=lags,
+                type_pi=type_pi,
+                replications=replications,
+                h=h,
             )
+        output_dates = result["date"]
+        if df.shape[1] == 2:  # univariate time series
+            res_df = pd.DataFrame(result.pop("sims"))
+            if return_sims:
+                res2_df = pd.DataFrame([])
+                res2_df["date"] = output_dates
+                sims_df = res_df.transpose()
+                sims_df.columns = [(i + 1) for i in range(sims_df.shape[1])]
+                return pd.concat([res2_df, sims_df], axis=1)
+            return pd.DataFrame(result)
+        else:  # multivariate time series
+            n_series = len(result["mean"][0])
+            series_names = [col for col in df.columns if col != "date"]
+            if len(series_names) != n_series:
+                series_names = [f"series_{i+1}" for i in range(n_series)]
+
+            # If series_choice is provided and valid, extract its index and return as univariate
+            if series_choice is not None and series_choice in series_names:
+                idx = series_names.index(series_choice)
+                # Extract only the selected series from each stat
+                summary_df = pd.DataFrame(
+                    {
+                        "date": output_dates,
+                        "mean": [x[idx] for x in result["mean"]],
+                        "lower": [x[idx] for x in result["lower"]],
+                        "upper": [x[idx] for x in result["upper"]],
+                    }
+                )
+                if return_sims:
+                    # sims: shape (replications, horizon, n_series)
+                    # list of replications, each is list of horizon, each is list of n_series
+                    sims = result["sims"]
+                    # For each replication, extract the selected series only
+                    sims_selected = [
+                        [h[idx] for h in rep] for rep in sims
+                    ]  # shape: (replications, horizon)
+                    sims_df = pd.DataFrame(sims_selected).transpose()
+                    sims_df.columns = [
+                        f"sim_{i+1}_{series_choice}"
+                        for i in range(sims_df.shape[1])
+                    ]
+                    res2_df = pd.DataFrame({"date": output_dates})
+                    return pd.concat([res2_df, sims_df], axis=1)
+                return summary_df
+
+            # Otherwise, return the full multivariate summary as before
+            summary_data = {"date": output_dates}
+            for stat in ["mean", "lower", "upper"]:
+                for s in range(n_series):
+                    summary_data[f"{stat}_{series_names[s]}"] = [
+                        x[s] for x in result[stat]
+                    ]
+            summary_df = pd.DataFrame(summary_data)
             if return_sims:
                 # sims: shape (replications, horizon, n_series)
-                # list of replications, each is list of horizon, each is list of n_series
                 sims = result["sims"]
-                # For each replication, extract the selected series only
-                sims_selected = [
-                    [h[idx] for h in rep] for rep in sims
-                ]  # shape: (replications, horizon)
-                sims_df = pd.DataFrame(sims_selected).transpose()
-                sims_df.columns = [
-                    f"sim_{i+1}_{series_choice}"
-                    for i in range(sims_df.shape[1])
-                ]
-                res2_df = pd.DataFrame({"date": output_dates})
-                return pd.concat([res2_df, sims_df], axis=1)
+                flat = []
+                for rep in sims:
+                    for s in range(n_series):
+                        flat.append([h[s] for h in rep])
+                sims_df = pd.DataFrame(flat).transpose()
+                colnames = []
+                for r in range(len(sims)):
+                    for s in range(n_series):
+                        colnames.append(f"sim_{r+1}_{series_names[s]}")
+                sims_df.columns = colnames
+                sims_df.insert(0, "date", output_dates)
+                return sims_df
             return summary_df
-
-        # Otherwise, return the full multivariate summary as before
-        summary_data = {"date": output_dates}
-        for stat in ["mean", "lower", "upper"]:
-            for s in range(n_series):
-                summary_data[f"{stat}_{series_names[s]}"] = [
-                    x[s] for x in result[stat]
-                ]
-        summary_df = pd.DataFrame(summary_data)
-        if return_sims:
-            # sims: shape (replications, horizon, n_series)
-            sims = result["sims"]
-            flat = []
-            for rep in sims:
-                for s in range(n_series):
-                    flat.append([h[s] for h in rep])
-            sims_df = pd.DataFrame(flat).transpose()
-            colnames = []
-            for r in range(len(sims)):
-                for s in range(n_series):
-                    colnames.append(f"sim_{r+1}_{series_names[s]}")
-            sims_df.columns = colnames
-            sims_df.insert(0, "date", output_dates)
-            return sims_df
-        return summary_df
+    except Exception as e:
+        return pd.DataFrame({"error": [str(e)]})

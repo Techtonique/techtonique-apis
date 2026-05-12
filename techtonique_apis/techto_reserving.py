@@ -41,21 +41,24 @@ def techto_reserving(
     - method: Reserving method (default: chainladder).
     Returns: Reserving results as a table for Excel.
     """
-    with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
-        df.to_csv(tmp.name, index=False)
-        result = api.reserving(
-            file_path=tmp.name,
-            method=method,
+    try: 
+        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
+            df.to_csv(tmp.name, index=False)
+            result = api.reserving(
+                file_path=tmp.name,
+                method=method,
+            )
+        if method == "chainladder":
+            return pd.DataFrame(result)
+        return pd.DataFrame(
+            {
+                "origin": result["Origin"],
+                "IBNR": result["IBNR"],
+                "IBNR 95": result["IBNR 95%"],
+            }
         )
-    if method == "chainladder":
-        return pd.DataFrame(result)
-    return pd.DataFrame(
-        {
-            "origin": result["Origin"],
-            "IBNR": result["IBNR"],
-            "IBNR 95": result["IBNR 95%"],
-        }
-    )
+    except Exception as e:
+        return pd.DataFrame({"error": [str(e)]})
 
 
 @func
@@ -93,16 +96,19 @@ def techto_mlreserving(
     - method: ML reserving method (default: RidgeCV).
     Returns: ML reserving results as a table for Excel.
     """
-    with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
-        df.to_csv(tmp.name, index=False)
-        result = api.mlreserving(
-            file_path=tmp.name,
-            method=method,
+    try: 
+        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
+            df.to_csv(tmp.name, index=False)
+            result = api.mlreserving(
+                file_path=tmp.name,
+                method=method,
+            )
+        return pd.DataFrame(
+            {
+                "origin": result["Origin"],
+                "IBNR": result["IBNR"],
+                "IBNR 95": result["IBNR 95%"],
+            }
         )
-    return pd.DataFrame(
-        {
-            "origin": result["Origin"],
-            "IBNR": result["IBNR"],
-            "IBNR 95": result["IBNR 95%"],
-        }
-    )
+    except Exception as e:
+        return pd.DataFrame({"error": [str(e)]})
