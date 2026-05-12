@@ -5,19 +5,7 @@
 from setuptools import setup, find_packages
 from os import path
 from codecs import open
-
-here = path.abspath(path.dirname(__file__))
-
-# get the dependencies and installs
-
-with open(
-    path.join(here, "requirements.txt"), encoding="utf-8"
-) as f:
-    all_reqs = f.read().split("\n")
-
-install_requires = [
-    x.strip() for x in all_reqs if "git+" not in x
-]
+from pathlib import Path
 
 requirements = ["requests"]
 
@@ -38,7 +26,16 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     description="Tools for interacting with Techtonique API",
-    install_requires=install_requires,
+    install_requires=[
+    "certifi",
+    "charset-normalizer",
+    "idna",
+    "pandas",
+    "requests",
+    "urllib3",
+    "matplotlib",
+    "python-dotenv",
+    "xlwings",],
     license="MIT license",
     long_description='High level Python functions for interacting with Techtonique APIs',
     include_package_data=True,
