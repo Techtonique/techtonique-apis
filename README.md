@@ -20,7 +20,7 @@ pip install techtonique_apis
 ## 2 - 1 - Python
 
 - File examples: [https://github.com/Techtonique/datasets/tree/main/time_series](https://github.com/Techtonique/datasets/tree/main/time_series)
-- Get a token: [https://www.techtonique.net/token](https://www.techtonique.net/token) (store in .env, in current directory as `TECHTONIQUE_TOKEN`)
+- Get a token: [https://www.techtonique.net/token](https://www.techtonique.net/token) (store in .env, in current directory as `TECHTONIQUE_TOKEN`) or at the command line `export TECHTONIQUE_TOKEN=YOUR_TOKEN`
 
 ```python
 from techtonique_apis import TechtoniqueAPI
@@ -71,6 +71,8 @@ See [examples/example.py](./examples/example.py)
 
 
 ## 2 - 2 - Excel
+
+See [examples/excel_formulas.xlsx](./examples/excel_formulas.xlsx)
 
 - [https://thierrymoudiki.github.io/blog/2025/07/02/r/python/techto-forecast](https://thierrymoudiki.github.io/blog/2025/07/02/r/python/techto-forecast)
 - [https://thierrymoudiki.github.io/blog/2025/07/07/r/python/techto-ml-classif](https://thierrymoudiki.github.io/blog/2025/07/07/r/python/techto-ml-classif)

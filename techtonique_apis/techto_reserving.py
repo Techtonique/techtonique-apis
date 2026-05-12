@@ -41,7 +41,7 @@ def techto_reserving(
     - method: Reserving method (default: chainladder).
     Returns: Reserving results as a table for Excel.
     """
-    try: 
+    try:
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             df.to_csv(tmp.name, index=False)
             result = api.reserving(
@@ -96,7 +96,7 @@ def techto_mlreserving(
     - method: ML reserving method (default: RidgeCV).
     Returns: ML reserving results as a table for Excel.
     """
-    try: 
+    try:
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             df.to_csv(tmp.name, index=False)
             result = api.mlreserving(

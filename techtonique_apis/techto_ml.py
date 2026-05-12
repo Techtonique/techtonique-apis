@@ -57,7 +57,7 @@ def techto_mlclassification(
     - predict_proba: If TRUE, return class probabilities (default: FALSE).
     Returns: Classification predictions as a table for Excel.
     """
-    try: 
+    try:
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             df.to_csv(tmp.name, index=False)
             result = api.mlclassification(
@@ -120,7 +120,7 @@ def techto_mlregression(
     - return_pi: If TRUE, return prediction intervals (default: TRUE).
     Returns: Regression predictions as a table for Excel.
     """
-    try: 
+    try:
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
             df.to_csv(tmp.name, index=False)
             result = api.mlregression(

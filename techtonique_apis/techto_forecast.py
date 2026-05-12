@@ -90,7 +90,7 @@ def techto_forecast(
         The forecast results or simulation matrix as a DataFrame for Excel.
 
     """
-    try: 
+    try:
         # Convert Excel serial dates to datetime if needed
         if pd.api.types.is_numeric_dtype(df["date"]):
             df["date"] = df["date"].apply(excel_date_to_datetime)
